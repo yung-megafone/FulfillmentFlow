@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         ClipIt - Ticket URL Copier
+// @name         ClipIt
 // @namespace    Yung-Megafone
-// @version      0.1
+// @version      0.1.1
 // @description  Automatically copies the title and URL of a ticket for easy dissemination
 // @author       Brando <capto.brando@pm.me>
 // @include      http*://t.corp.amazon.com/*
@@ -14,102 +14,108 @@
 (function() {
     'use strict';
 
-    // Set an interval to check for the ticket action buttons every 3 seconds
+    // Runs every 3 seconds to check if the "Click Me Bruh" button already exists.
+    // If it doesn't exist, the script will create and insert it.
     setInterval(function() {
-        // Check if both copy buttons already exist to avoid duplicate buttons
-        if (document.getElementById('copy_ticket_as_hyperlink_button') && document.getElementById('copy_ticket_as_plain_text_button')) {
-            // If both buttons exist, we don't need to add them again
-            return;
+        if (document.getElementById('copyticketbutton')) {
+            return; // Exit if the button is already there to avoid duplication
         }
 
-        // Find the container for interactive action buttons
-        var actionButtonsContainer = document.getElementsByClassName('interaction-buttons');
-        if (actionButtonsContainer.length > 0) {
-            console.log('Adding ticket copy buttons');
+        // Locate the container where buttons are placed
+        var interactiveButtons = document.getElementsByClassName('interaction-buttons');
+        if (interactiveButtons.length > 0) {
+            console.log('Adding t-copy button');
 
-            // Create the "Copy as Hyperlink" button
-            var copyAsHyperlinkButton = document.createElement('button');
-            copyAsHyperlinkButton.appendChild(document.createTextNode('Copy Ticket as Hyperlink'));
-            copyAsHyperlinkButton.setAttribute('class', 'awsui-button awsui-button-variant-normal awsui-hover-child-icons');
-            copyAsHyperlinkButton.setAttribute('id', 'copy_ticket_as_hyperlink_button');
-            copyAsHyperlinkButton.addEventListener('click', copyTicketAsHyperlink, false);
+            // Create a new button element
+            var button = document.createElement('button');
+            button.appendChild(document.createTextNode(' Click Me Bruh'));
+            button.setAttribute('class', 'awsui-button awsui-button-variant-normal awsui-hover-child-icons');
+            button.setAttribute('id', 'copyticketbutton');
+            button.addEventListener('click', processAndCopyTicketInformation, false);
 
-            // Create the "Copy as Plain Text" button
-            var copyAsPlainTextButton = document.createElement('button');
-            copyAsPlainTextButton.appendChild(document.createTextNode('Copy Ticket as Plain Text'));
-            copyAsPlainTextButton.setAttribute('class', 'awsui-button awsui-button-variant-normal awsui-hover-child-icons');
-            copyAsPlainTextButton.setAttribute('id', 'copy_ticket_as_plain_text_button');
-            copyAsPlainTextButton.addEventListener('click', copyTicketAsPlainText, false);
+            // Create a wrapper div and insert the button into it
+            var div = document.createElement('div');
+            div.setAttribute('class', 'edit-issue');
+            div.appendChild(button);
 
-            // Create a div to wrap both buttons
-            var buttonsWrapperDiv = document.createElement('div');
-            buttonsWrapperDiv.setAttribute('class', 'edit-issue');
-            // Append both buttons to the wrapper div
-            buttonsWrapperDiv.appendChild(copyAsHyperlinkButton);
-            buttonsWrapperDiv.appendChild(copyAsPlainTextButton);
-            // Insert the buttons div into the action buttons container
-            actionButtonsContainer[0].insertBefore(buttonsWrapperDiv, actionButtonsContainer[0].firstChild);
+            // Insert the new button at the top of the interaction buttons section
+            interactiveButtons[0].insertBefore(div, interactiveButtons[0].firstChild);
         }
-    }, 3000); // Check every 3 seconds
+    }, 3000);
 
-    // Function to copy the ticket title and URL as a Slack-friendly hyperlink
-    function copyTicketAsHyperlink() {
-        var ticketTitle = document.getElementsByClassName('title-container')[0].children[0].innerText;
-        var ticketURL = document.URL;
+    // Function to copy ticket title and URL to the clipboard
+    function processAndCopyTicketInformation() {
+        // Locate the ticket title input field
+        var titleElement = document.getElementById('ticket-title');
+        var title = titleElement ? titleElement.value.trim() : "Untitled Ticket";
+
+        // Construct the text string to copy
+        var text = `${title} {${document.URL}}`;
+
+        // Copy the text to the clipboard using Greasemonkey's API
+        GM_setClipboard(text, 'text');
+
+        // Show toast notification to confirm the action
+        showCopySuccessNotification("Copied to clipboard!");
+
+        // Update button tooltip as an extra indicator
+        var button = document.getElementById('copyticketbutton');
+        button.setAttribute('title', 'Copied to clipboard!!');
+    }
+
+    // Function to display a toast popup message
+    function showCopySuccessNotification(message) {
+        // Create a div element for the toast
+        var toast = document.createElement('div');
+        toast.innerText = message;
         
-        // Format the text in Slack-friendly Markdown: <URL|Title> format
-        var formattedText = `<${ticketURL}|${ticketTitle}> (${ticketURL})`;
+        // Apply styling for the toast notification
+        toast.style.position = 'fixed';
+        toast.style.bottom = '20px';
+        toast.style.right = '20px';
+        toast.style.background = 'rgba(0, 0, 0, 0.8)';
+        toast.style.color = '#fff';
+        toast.style.padding = '10px 20px';
+        toast.style.borderRadius = '5px';
+        toast.style.zIndex = '10000';
+        toast.style.fontSize = '14px';
+        toast.style.opacity = '1';
+        toast.style.transition = 'opacity 0.5s ease-in-out';
 
-        // Copy the formatted text to the clipboard
-        GM_setClipboard(formattedText, 'text');
+        // Append the toast to the body
+        document.body.appendChild(toast);
 
-        // Show a success notification popup
-        showPopup('Ticket copied as hyperlink!');
+        // Remove the toast after 2 seconds with a fade-out effect
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 500);
+        }, 2000);
     }
 
-    // Function to copy the ticket title and URL as plain text
-    function copyTicketAsPlainText() {
-        var ticketTitle = document.getElementsByClassName('title-container')[0].children[0].innerText;
-        var ticketURL = document.URL;
+// Function to sync the ticket title with the description field while allowing user edits
+function autoSyncTitleWithDescription() {
+    var titleInput = document.getElementById('ticket-title');
+    var descriptionArea = document.getElementById('markdown-editor');
 
-        // Format the text as plain text: "Title (URL)"
-        var plainText = ticketTitle + ' (' + ticketURL + ')';
+    if (titleInput && descriptionArea) {
+        titleInput.addEventListener('input', function() {
+            var currentDescription = descriptionArea.value;
+            var newTitle = `[Ticket Title]: ${titleInput.value}`;
 
-        // Copy the plain text to the clipboard
-        GM_setClipboard(plainText, 'text');
-
-        // Show a success notification popup
-        showPopup('Ticket copied as plain text!');
+            // Check if the description already starts with the title format
+            if (currentDescription.startsWith("[Ticket Title]: ")) {
+                // Preserve user edits after the title
+                var userContent = currentDescription.substring(currentDescription.indexOf("\n") + 1);
+                descriptionArea.value = `${newTitle}\n${userContent}`;
+            } else {
+                // If the user hasn't modified it, just set the title
+                descriptionArea.value = `${newTitle}\n${currentDescription}`;
+            }
+        });
     }
+}
 
-    // Function to create and show a popup notification
-    function showPopup(message) {
-        // Create the popup element
-        var popup = document.createElement('div');
-        popup.textContent = message; // Set the message text
-        popup.style.position = 'fixed';
-        popup.style.bottom = '20px'; // Position at the bottom of the screen
-        popup.style.left = '50%';
-        popup.style.transform = 'translateX(-50%)'; // Center horizontally
-        popup.style.backgroundColor = '#28a745'; // Green background (success)
-        popup.style.color = 'white';
-        popup.style.padding = '10px 20px';
-        popup.style.borderRadius = '5px';
-        popup.style.fontSize = '14px';
-        popup.style.zIndex = '9999'; // Ensure it's above other elements
-        popup.style.opacity = '1';
-        popup.style.transition = 'opacity 0.5s ease-out'; // Smooth fade-out effect
+    // Run auto-fill function once the DOM is fully loaded
+    window.addEventListener('load', autoSyncDescriptionWithTitle);
 
-        // Append the popup to the body
-        document.body.appendChild(popup);
-
-        // Set a timeout to hide the popup after 3 seconds
-        setTimeout(function() {
-            popup.style.opacity = '0'; // Fade out the popup
-            // Remove the popup from the DOM after the fade-out transition
-            setTimeout(function() {
-                popup.remove();
-            }, 500);
-        }, 3000); // Popup will disappear after 3 seconds
-    }
 })();
