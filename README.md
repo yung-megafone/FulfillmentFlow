@@ -6,6 +6,7 @@ A collection of workflow automation scripts designed to streamline and optimize 
 - **Ticketing Automation**: Simplifies creating and managing tickets.
 - **Autocomplete for Common Issues**: Speeds up ticket input with intelligent suggestions.
 - **Clipboard Integration**: Quickly copy and paste ticket details.
+- **Toast Notifications**: Provides instant feedback when actions are performed.
 
 ## Prerequisites
 - These scripts are designed to run on Amazon systems and may not function elsewhere.
@@ -13,7 +14,7 @@ A collection of workflow automation scripts designed to streamline and optimize 
 
 ## Installation
 1. Clone this repository or download the specific script you need.
-2. Install a userscript manager in your browser, like Tampermonkey.
+2. Install a userscript manager in your browser.
 3. Add the desired script to your userscript manager.
 
 ## Usage
@@ -26,6 +27,9 @@ This repository is licensed under the [MIT License](LICENSE). While the code is 
 
 ## Contributing
 Contributions are welcome! If you have improvements or new ideas, feel free to open a pull request or submit an issue.
+
+## Credits
+The copy-to-clipboard functionality was originally developed by **Arjun Jobanputra (ajjobanp@)**.
 
 ## Disclaimer
 These scripts are designed for personal use and are not officially affiliated with or endorsed by Amazon.
