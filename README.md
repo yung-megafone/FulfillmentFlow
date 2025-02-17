@@ -3,7 +3,6 @@
 A collection of workflow automation scripts designed to streamline and optimize Amazon-related operations. These scripts are tailored specifically for Amazon systems and aim to enhance efficiency in tasks such as ticketing, issue reporting, and other routine workflows.
 
 ## Features
-- **Ticketing Automation**: Simplifies creating and managing tickets.
 - **Clipboard Integration**: Quickly copy and paste ticket details.
 - **Toast Notifications**: Provides instant feedback when actions are performed.
 
