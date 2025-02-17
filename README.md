@@ -22,9 +22,10 @@ A collection of workflow automation scripts designed to streamline and optimize 
 1. Clone this repository or download the specific script you need.
 2. Install a userscript manager in your browser.
 3. Add the desired script to your userscript manager.
+4. Enable the script and reload the webpage.
 
 ## Usage
-1. Open your Amazon system interface.
+1. Open your Amazon ticketing system interface.
 2. The script will automatically enhance the functionality of relevant pages.
 3. Use keyboard shortcuts or provided UI features to streamline your workflow.
 
@@ -35,7 +36,7 @@ This repository is licensed under the [MIT License](LICENSE). While the code is 
 Contributions are welcome! If you have improvements or new ideas, feel free to open a pull request or submit an issue.
 
 ## Credits
-The copy-to-clipboard functionality was originally developed by **Arjun Jobanputra (ajjobanp@)**.
+The copy-to-clipboard functionality was originally developed by **Arjun Jobanputra**.
 
 ## Disclaimer
 These scripts are designed for personal use and are not officially affiliated with or endorsed by Amazon.
