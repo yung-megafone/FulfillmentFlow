@@ -7,11 +7,10 @@ A collection of workflow automation scripts designed to streamline and optimize 
 - **Clipboard Integration**: Quickly copy and paste ticket details.
 - **Toast Notifications**: Provides instant feedback when actions are performed.
 
-🚀 *Smart Suggestions feature coming soon!*
+🚀 *Smart Suggestions & AutoFill coming soon!*
 
 ## Changelog
 ### v1.1 Updates
-- Added **auto-fill description**: The ticket title is now automatically inserted into the description field.
 - Added **toast notifications**: Provides immediate feedback when the copy button is used.
 
 ## Prerequisites
