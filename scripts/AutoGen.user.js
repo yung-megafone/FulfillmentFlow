@@ -7,8 +7,8 @@
 // @include     http*://t.corp.amazon.com/*
 // @run-at      document-end
 // @grant       none
-// @updateURL   https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/AutoGen.user.js
-// @downloadURL https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/AutoGen.user.js
+// @updateURL   https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/scripts/AutoGen.user.js
+// @downloadURL https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/scripts/AutoGen.user.js
 // ==/UserScript==
 
 (function() {
