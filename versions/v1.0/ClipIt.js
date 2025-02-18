@@ -7,8 +7,8 @@
 // @include  	http*://t.corp.amazon.com/*
 // @run-at   	document-end
 // @grant    	GM_setClipboard
-// @updateURL	https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/ClipIt.user.js
-// @downloadURL  https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/ClipIt.user.js
+// @updateURL	https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/versions/v1.0/ClipIt.js
+// @downloadURL  https://raw.githubusercontent.com/yung-megafone/FulfillmentFlow/refs/heads/main/versions/v1.0/ClipIt.js
 // ==/UserScript==
 
 
