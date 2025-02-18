@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name     	ClipIt
 // @namespace	Yung-Megafone
-// @version  	1.3-alpha.2
+// @version  	1.3
 // @description  Automagically copies the title and URL of a ticket for easy dissemination
 // @author   	Brando <capto.brando@pm.me>
 // @include  	http*://t.corp.amazon.com/*
